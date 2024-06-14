@@ -144,7 +144,8 @@ Install it with M-x dap-js-debug-setup." dap-js-debug-path)
         (dap--put-if-absent conf :url (read-string
                                        "Browse url: "
                                        "http://localhost:3000" t))
-        (dap--put-if-absent conf :webRoot (lsp-workspace-root))))
+        (dap--put-if-absent conf :webRoot (lsp-workspace-root))
+        (dap--put-if-absent conf :userDataDir nil)))
   (if (plist-member conf :file)
       (if (plist-get conf :url)
           (error "Both \"file\" and \"url\" properties are set in launch.json. \
@@ -200,6 +201,15 @@ time, use \"console\":\"internalConsole\" instead"))
                                    :webRoot nil
                                    :url nil
                                    :name "Chrome Launch URL"))
+
+(dap-register-debug-template "Chrome Attach"
+                             (list :type "pwa-chrome"
+                                   :cwd nil
+                                   :request "attach"
+                                   :port 9222
+                                   :webRoot nil
+                                   :url nil
+                                   :name "Chrome Attach"))
 
 (add-hook 'dap-session-created-hook #'dap-js-debug--session-created)
 (defun dap-js-debug--session-created (debug-session)
